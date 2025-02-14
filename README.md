@@ -2,7 +2,7 @@
 Reverse execution on Simics7
 
 Simics version 7 deprecated reverse execution, which is arguably the coolest feature of Simics.
-An explanation for why can be found on [this blog](\url{https://jakob.engbloms.se/archives/4452}).
+An explanation for why can be found on [this blog](https://jakob.engbloms.se/archives/4452).
 
 This project uses the _ _snapshot_ _ feature of Simics 7 to recreate some of the reverse execution
 functions that existed prior to Simics 7.  The Python module ReverseMgr implements two key functions:
@@ -30,4 +30,3 @@ for testing as follows:
 - Set one or more breakpoints that you wish to reverse to.
 - Use _ _@rev.reverse()_ _
 - Use _ _@skipToCycle(cycle)_ _ to skip to a cycle.
-- 
