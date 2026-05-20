@@ -19,12 +19,11 @@ The module also reimplements CLI reversing commands from Simics 6 including:
 * skip-to-cycle \<cycle\>
 
 ## Demonstration video
-A demonstration of the reversing functions is at: https://youtu.be/bbBkQ39JBKo
+See a demonstration of the reversing functions in [this demo video](https://github.com/mfthomps/Simics7_Reversing/raw/refs/heads/main/reverseExecution.mp4)
+(Or youtube https://youtu.be/bbBkQ39JBKo)
 
 ## Installation
-The ReverseMgr is part of the [RESim](https://github.com/mfthomps/RESim) reverse engineering platform, however it has no dependencies
-other than Simics and thus can be integrated into other Simics projects.   The current link
-to the module is [here](https://github.com/mfthomps/RESim/blob/reverse/simics/monitorCore/reverseMgr.py).
+The ReverseMgr is part of the [RESim](https://github.com/mfthomps/RESim) reverse engineering platform, however it has no dependencies other than Simics and can be integrated into other Simics projects using the Python API, or run directly via the _run-script_ command.   The module is available [here](https://github.com/mfthomps/RESim/blob/reverse/simics/monitorCore/reverseMgr.py).
 
 ## Usage
 Either run the module directly via the Simics _run-script_ command, or import it into a Python script and instantiate the ReverseMgr.  If run via run-script, set a _REVERSE_SPAN_ env value to a suitable value before starting Simics.  If using the Python API, pass that value as _span=value_. (The arg, int_t, and output_modes parameters are Simics variables available in the first level Python script run from _run-script_.)   Experiment with the span value for your simulation.  It controls how frequently a snapshot is made based on cycles within the reference cpu.
