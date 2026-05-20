@@ -15,16 +15,23 @@ simulate use of a Core\_Simulation\_Stopped HAP.
 The module also reimplements CLI reversing commands from Simics 6 including:
 * enable-reverse-execution, will result in recording snapshots cycles for use in reverse and skip to functions
 * disable-reverse-execution
-* rev [n] -- where n is cycles to reverse, default is to just reverse.
+* rev [n] -- where n is cycles to reverse, default is to just reverse.  Reversing will stop either at a breakpoint, or the point at which reversing was enabled.
 * skip-to-cycle \<cycle\>
 
 ## Demonstration video
 A demonstration of the reversing functions is at: https://youtu.be/bbBkQ39JBKo
 
 ## Installation
-The ReverseMgr is part of the RESim reverse engineering platform, however it has no dependencies
+The ReverseMgr is part of the [RESim](https://github.com/mfthomps/RESim) reverse engineering platform, however it has no dependencies
 other than Simics and thus can be integrated into other Simics projects.   The current link
 to the module is [here](https://github.com/mfthomps/RESim/blob/reverse/simics/monitorCore/reverseMgr.py).
+
+## Usage
+Either run the module directly via the Simics _run-script_ command, or import it into a Python script and instantiate the ReverseMgr.  If run via run-script, set a _REVERSE_SPAN_ env value to a suitable value before starting Simics.  If using the Python API, pass that value as _span=value_. (The arg, int_t, and output_modes parameters are Simics variables available in the first level Python script run from _run-script_.)   Experiment with the span value for your simulation.  It controls how frequently a snapshot is made based on cycles within the reference cpu.
+
+Once the module is loaded, the CLI commands can be used, or the module APIs, e.g., enableReverse.
+
+If Python API is used, your Python scripts must first be refactored to call the reverseMgr SIM_breakpoint function instead of the Simics SIM_breakpoint function.  Use the _setCallback_ function to mimic a Simics Core_Simulation_Stopped HAP.  The callback will be passed a struture having fields from the initiating memory transaction, e.g., logical_address, size, etc.
 
 ## Notes
 These functions behave in a manner similar to reversing functions available
@@ -35,9 +42,9 @@ constraints.  For the reverseMgr, these include:
 * Breakpoints set prior to reverse execution via the Simics SIM_breakpoint API must be altered to use the reverseMgr's SIM_breakpoint API.
 
 The stratgey is simple.  When reverse is enabled, we take in-memory snapshots
-periodically (every cycle\_span cycles, ensuring each snapshot falls on multiple of the span).
+periodically (every cycle_span cycles, ensuring each snapshot falls on multiple of the span).
 To reverse or skip, we restore snapshots and run forward to hit either
-breakpoints or the requested number of cycles.  The choice of the cycle\_span
+breakpoints or the requested number of cycles.  The choice of the cycle_span
 value can have dramatic effects on performance, and should depend on your simulation.
 
 The reverseMgr module could be instantiated for each target CPU (cell), however, only
